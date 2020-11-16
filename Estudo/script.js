@@ -1,3 +1,4 @@
+alert("Olá jogador, para melhor experiencia diminua o tamanho da sua página")
 const FRONT = "card_front"
 const BACK = "card_back"
 const CARD = "card"
@@ -12,16 +13,14 @@ startGame()
 
 
 function startGame(){
-    cards = creatCardsFromTechs(techs)
-    shuffleCards(cards);
-   
-    initiallizeCards(cards)
+    initiallizeCards(game.creatCardsFromTechs());
    
 }
 function initiallizeCards(cards){
 
 let gameBoard = document.getElementById("gameBoard");
-cards.forEach(card => {
+gameBoard.innerHTML = "";
+game.cards.forEach(card => {
 
     let cardElement = document.createElement("div");
     cardElement.id = card.id;
@@ -64,53 +63,45 @@ function creatCardFace(face,card,element)   {
 element.appendChild(cardElementFace)
 }
 
+function flipCard(){
+if (game.setCard(this.id)){
 
+this.classList.add("flip");
+if(game.secondCard){
+if (game.checkMatch()){
+    game.clearCards();
+if(game.checkGameOver()){
 
-
-
-
-function shuffleCards(cards){
-    let currentIndex = cards.length;
-    let randomIndex = 0;
-    
-    while(currentIndex !== 0){
-          
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        [cards[randomIndex], cards [currentIndex]] = [cards[currentIndex],cards[randomIndex]]
-    }
-
+    let gameOver= document.getElementById("gameOver");
+    gameOver.style.display = "flex"
 }   
 
 
 
+}else{
+    setTimeout(() => {
+    let firstCardView = document.getElementById(game.firstCard.id);
+    let secondCardView = document.getElementById(game.secondCard.id);
+
+    firstCardView.classList.remove("flip");
+    secondCardView.classList.remove("flip");
+    game.unflipCards();
+}, 1000);
 
 
-function creatCardsFromTechs(techs){
-    let cards = [];
-     for(let tech of techs){
-     cards.push(creatPairFromTech(tech));
 
+
+};
+}
+
+  
   }
-  return cards.flatMap(pair => pair)
-}
 
-function creatPairFromTech(tech){
-    return [{
-        id:creatidWithTech(tech),
-        icon:tech,
-        flipped:false
-    }, {  id:creatidWithTech(tech),
-        icon:tech,
-        flipped:false} ]
-}
-function creatidWithTech(tech){
-    return tech + parseInt( Math.random() * 1000);
-}
-
-
-function flipCard(){
-
-this.classList.add("flip")
-}
+ }
+ function restart() {
+     game.clearCards();
+     startGame();
+     let gameOver= document.getElementById("gameOver");
+    gameOver.style.display = "none"
+   
+ }

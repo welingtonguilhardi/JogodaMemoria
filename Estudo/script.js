@@ -1,4 +1,4 @@
-alert("Olá jogador, para melhor experiencia diminua o tamanho da sua página")
+alert("Olá jogador")
 const FRONT = "card_front"
 const BACK = "card_back"
 const CARD = "card"
